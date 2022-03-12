@@ -46,8 +46,8 @@ for l in test_lines:
         clean_l = re.sub(r"(^\[\s)|(\s\])", "", l)  # Buuuuut for parsing they're annoying, so bye!
         toks = clean_l.split(" ")
         out += "["  # Since this line had brackets, it will have brackets on output
-        for t in toks:
-            if t in word_tag_freq_matrix:
+        for t in toks:  # Go through each word
+            if t in word_tag_freq_matrix:  # If it's in the matrix, find the max
                 max_inst = 0
                 max_tag = ""
                 for tag in word_tag_freq_matrix[t]:
@@ -55,16 +55,16 @@ for l in test_lines:
                         max_inst = word_tag_freq_matrix[t][tag]
                         max_tag = tag
                 if max_tag == "":
-                    max_tag = "NN"
-                out+=" "+t+"/"+max_tag
+                    max_tag = "NN"  # If for whatever reason out matrix doesn't have the answer NN
+                out+=" "+t+"/"+max_tag  # Adding the result to the string
             else:
-                out+=" "+t+"/NN"
-        out+=" ]\n"
-    else:
+                out+=" "+t+"/NN"  # If it's not in it altogether, NN
+        out+=" ]\n"  # Closing bracket!
+    else:  # No brackets? same sort of idea...
         l = l.rstrip()
-        if l != "":
+        if l != "":  # New line at the end of the file caused some problems
             toks = l.split(" ")
-            for t in toks:
+            for t in toks:  # same as before, each token, get the max tag if applicable
                 if t in word_tag_freq_matrix:
                     max_inst = 0
                     max_tag = ""
@@ -73,10 +73,15 @@ for l in test_lines:
                             max_inst = word_tag_freq_matrix[t][tag]
                             max_tag = tag
                     if max_tag == "":
-                        max_tag = "NN"
+                        max_tag = "NN"  # all else fails, NN
                     out+=" "+t+"/"+max_tag
                 else:
-                    out+=" "+t+"/NN"
-            out+=" \n"
+                    out+=" "+t+"/NN"  # NN here too
+            out+=" \n"  # next line please!
 
-print(out)
+print(out)  # we're done, and we print
+
+# TEMPORARY FOR EVALUATION COMMENT OUT OTHERWISE
+test_out = open("output.txt", "w")
+test_out.write(out)
+test_out.close()
